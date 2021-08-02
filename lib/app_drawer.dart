@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter_app/person.dart';
-import 'package:test_flutter_app/staff_activity.dart';
+import 'package:test_flutter_app/screens/screen_profil.dart';
+import 'package:test_flutter_app/screens/screen_staff.dart';
+import 'package:test_flutter_app/screens/screen_main.dart';
 
 class AppDrawer extends Drawer {
   final Person person;
@@ -42,7 +44,7 @@ class DrawerHeader extends StatelessWidget {
       children: [
         Image.asset('drawer_header.jpg'),
         const SizedBox(
-          height: 45.0,
+          height: 40.0,
         ),
         Text(
           person.firstName,
@@ -72,103 +74,77 @@ class DrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()),
-            // );
-          },
-          child: Row(
-            children: [
-              const Icon(Icons.portrait_rounded),
-              const Text('Profil'),
-            ],
-          ),
-        ),
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()),
-            // );
-          },
-          child: Row(
-            children: [const Icon(Icons.event_available), const Text('News')],
-          ),
-        ),
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()),
-            // );
-          },
-          child: Row(
-            children: [
-              const Icon(Icons.emoji_events),
-              const Text('Bestenliste')
-            ],
-          ),
-        ),
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()),
-            // );
-          },
-          child: Row(
-            children: [
-              const Icon(Icons.family_restroom_rounded),
-              const Text('Mitglieder')
-            ],
-          ),
-        ),
-        setDivider(),
-        MaterialButton(
-          onPressed: () {
+        ListTile(
+          title: const Text('Profil'),
+          leading: const Icon(Icons.portrait_rounded),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const StaffActivity()),
+              MaterialPageRoute(builder: (context) => const UserProfilScreen()),
             );
           },
-          child: Row(
-            children: [
-              const Icon(Icons.support_agent_rounded),
-              const Text('Support'),
-            ],
-          ),
         ),
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()),
-            // );
+
+        ListTile(
+          title: const Text('News'),
+          leading: const Icon(Icons.event_available),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.pop(context);
           },
-          child: Row(
-            children: [const Icon(Icons.settings), const Text('Einstellungen')],
-          ),
         ),
+
+        ListTile(
+          title: const Text('Bestenliste'),
+          leading: const Icon(Icons.emoji_events),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+
+        ListTile(
+          title: const Text('Mitglieder'),
+          leading: const Icon(Icons.family_restroom_rounded),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+
         setDivider(),
-        MaterialButton(
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const StaffActivity()
-            //       ),
-            // );
+
+//Go to StaffActivity
+
+        ListTile(
+          title: const Text('Support'),
+          leading: const Icon(Icons.support_agent_rounded),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const StaffScreen()),
+            );
           },
-          child: Row(
-            children: [const Icon(Icons.logout), const Text('Logout')],
-          ),
+        ),
+
+        ListTile(
+          title: const Text('Einstellungen'),
+          leading: const Icon(Icons.settings),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+
+        setDivider(),
+        ListTile(
+          title: const Text('Logout'),
+          leading: const Icon(Icons.logout),
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );
@@ -177,7 +153,7 @@ class DrawerMenu extends StatelessWidget {
 
 Divider setDivider() {
   return Divider(
-    height: 16.0,
+    height: 8.0,
     thickness: 1.0,
     color: Colors.grey[700],
   );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'main_activity.dart';
-import 'staff_activity.dart';
+import 'screens/screen_main.dart';
+import 'screens/screen_profil.dart';
+import 'screens/screen_staff.dart';
 
 void main() {
   runApp(
@@ -9,10 +10,11 @@ void main() {
       title: 'Dart Club "stich e.V."',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
-      initialRoute: 'mainActivity',
+      initialRoute: 'mainScreen',
       routes: {
-        'mainActivity': (context) => const MainActivity(),
-        'staffActivity': (context) => const StaffActivity(),
+        'mainScreen': (context) => const MainScreen(),
+        'staffScreen': (context) => const StaffScreen(),
+        'userProfilScreen': (context) => const UserProfilScreen(),
       },
     ),
   );

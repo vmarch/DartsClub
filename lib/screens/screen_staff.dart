@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'app_drawer.dart';
-import 'person.dart';
-import 'staff_list.dart';
+import '../app_drawer.dart';
+import '../person.dart';
+import '../staff_list.dart';
 
-class StaffActivity extends StatelessWidget {
-  const StaffActivity({Key? key}) : super(key: key);
+class StaffScreen extends StatelessWidget {
+  const StaffScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
