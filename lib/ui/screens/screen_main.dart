@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 import '../drawer/app_drawer.dart';
 import '../../news_item.dart';
 import '../../person.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen( {Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,21 @@ consetetur sadipscing elitr, sed diam nonumy eirmod tempor
 List<String> newsImages = ['drawer_header.jpg', 'bbq.jpg'];
 
 class _Home extends State<Home> {
-  Person person = Person()..getBaseUser();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Person _person = Person()..getBaseUser();
+
+  Future<void> _getPrefPerson() async {
+    SharedPreferences pref = await _prefs;
+    setState(() {
+      _person = pref.get('person') as Person;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPrefPerson();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +72,19 @@ class _Home extends State<Home> {
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () {
-              print('pressed Calendar');
+            //TODO  print('pressed Calendar');
             },
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              print('pressed Share');
+            //TODO  print('pressed Share');
             },
           ),
         ],
       ),
       drawer: getAppDrawer(),
-      body: Column( 
+      body: Column(
         children: [
           Container(
             height: 64,
@@ -81,7 +95,6 @@ class _Home extends State<Home> {
             ),
           ),
           Expanded(
-               
             child: ListView.separated(
               itemCount: items.length,
               separatorBuilder: (context, index) {
@@ -99,7 +112,7 @@ class _Home extends State<Home> {
   }
 
   getAppDrawer() {
-    var appDrawer = AppDrawer(context,person);
+    var appDrawer = AppDrawer(context, _person);
     return appDrawer.buildDrawer();
   }
 }

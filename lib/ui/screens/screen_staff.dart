@@ -51,13 +51,13 @@ class _StaffHomeState extends State<StaffHome> {
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () {
-              print('pressed Calendar');
+            //TODO  print('pressed Calendar');
             },
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              print('pressed Share');
+            //TODO  print('pressed Share');
             },
           ),
         ],

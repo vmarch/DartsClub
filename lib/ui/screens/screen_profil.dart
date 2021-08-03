@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../drawer/app_drawer.dart';
 import '../../person.dart';
@@ -22,15 +23,29 @@ class UserProfileHome extends StatefulWidget {
 }
 
 class _UserProfileHome extends State<UserProfileHome> {
-  Person person = Person()..getBaseUser();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Person _person = Person()..getBaseUser();
+
+  Future<void> _getPrefPerson() async {
+    SharedPreferences pref = await _prefs;
+    setState(() {
+      _person = pref.get('person') as Person;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPrefPerson();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    backgroundColor: Colors.blue[100],
+      backgroundColor: Colors.blue[100],
       appBar: AppBar(
         title: const Text('Dart Club "stich e.V."'),
-                leading: IconButton(
+        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
@@ -40,21 +55,21 @@ class _UserProfileHome extends State<UserProfileHome> {
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () {
-              print('pressed Calendar');
+            //TODO  print('pressed Calendar');
             },
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              print('pressed Share');
+            //TODO  print('pressed Share');
             },
           ),
         ],
       ),
-      drawer: getAppDrawer(person),
+      drawer: getAppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-          child: Column(
+        child: Column(
           children: [
             CircleAvatar(
               backgroundImage: getUserAvatar(),
@@ -64,42 +79,42 @@ class _UserProfileHome extends State<UserProfileHome> {
               children: [
                 const SizedBox(width: 50, child: Text('Vorname:')),
                 setVerticalDivider(),
-                Text(person.name),
+                Text(_person.name),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Nachname:')),
                 setVerticalDivider(),
-                Text(person.surName),
+                Text(_person.surName),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('E-Mail:')),
                 setVerticalDivider(),
-                Text(person.email),
+                Text(_person.email),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Status:')),
                 setVerticalDivider(),
-                Text(person.staff ? person.job : 'Mitglied' ),
+                Text(_person.staff ? _person.job : 'Mitglied'),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Name')),
                 setVerticalDivider(),
-                Text(person.name),
+                Text(_person.name),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Name')),
                 setVerticalDivider(),
-                Text(person.name),
+                Text(_person.name),
               ],
             ),
             Row(
@@ -116,16 +131,15 @@ class _UserProfileHome extends State<UserProfileHome> {
   }
 
   ImageProvider<Object> getUserAvatar() {
-    if (person.assetsPhoto != "") {
-      return AssetImage(person.assetsPhoto);
+    if (_person.assetsPhoto != "") {
+      return AssetImage(_person.assetsPhoto);
     } else {
-      return NetworkImage(person.urlPhoto);
+      return NetworkImage(_person.urlPhoto);
     }
   }
 
-
-  getAppDrawer(person) {
-    var appDrawer = AppDrawer(context, person);
+  getAppDrawer() {
+    var appDrawer = AppDrawer(context, _person);
     return appDrawer.buildDrawer();
   }
 }

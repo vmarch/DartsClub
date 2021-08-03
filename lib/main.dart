@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'ui/screens/screen_main.dart';
 import 'ui/screens/screen_profil.dart';
 import 'ui/screens/screen_staff.dart';
+//import 'dart:io';
 
 void main() {
   runApp(
@@ -18,4 +19,5 @@ void main() {
       },
     ),
   );
+  // print('System: ${Platform.operatingSystem} ');
 }

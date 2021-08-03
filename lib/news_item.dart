@@ -11,6 +11,7 @@ class NewsItem {
 
   Widget createNewItem(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildTitle(context),
         _buildMessage(context),
