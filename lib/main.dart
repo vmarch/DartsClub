@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'screens/screen_main.dart';
-import 'screens/screen_profil.dart';
-import 'screens/screen_staff.dart';
+import 'ui/screens/screen_main.dart';
+import 'ui/screens/screen_profil.dart';
+import 'ui/screens/screen_staff.dart';
 
 void main() {
   runApp(

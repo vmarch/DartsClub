@@ -12,8 +12,8 @@ class StaffList {
       'job': 'Feel-Good-Managerin',
       'phone': '0171/50584',
       'email': 'maria_tormann@stich.de',
-      'assetphoto': 'personsphoto/david-bares-816.jpeg',
-      'urlphoto': 'https://images.pexels.com/users/avatars/42311/david-bares-816.jpeg?auto=compress&fit=crop&h=256&w=256'
+      'assetsPhoto': 'personsphoto/david-bares-816.jpeg',
+      'urlPhoto': 'https://images.pexels.com/users/avatars/42311/david-bares-816.jpeg?auto=compress&fit=crop&h=256&w=256'
     });
 
     _staffList.add({
@@ -22,8 +22,8 @@ class StaffList {
       'job': 'Buchhaltung',
       'phone': '0176/55454',
       'email': 'manfred_musterman@email.de',
-      'assetphoto': 'personsphoto/profil_maria.png',
-      'urlphoto': ''
+      'assetsPhoto': 'personsphoto/profil_maria.png',
+      'urlPhoto': ''
     });
 
     _staffList.add({
@@ -32,8 +32,8 @@ class StaffList {
       'job': 'Vorstand',
       'phone': '0141/54585',
       'email': 'hannes_mauer@stich.de',
-      'assetphoto': 'personsphoto/profil_hannes.png',
-      'urlphoto': ''
+      'assetsPhoto': 'personsphoto/profil_hannes.png',
+      'urlPhoto': ''
     });
   }
 

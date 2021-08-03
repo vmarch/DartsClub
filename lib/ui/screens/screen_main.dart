@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../app_drawer.dart';
-import '../news_item.dart';
-import '../person.dart';
+import '../drawer/app_drawer.dart';
+import '../../news_item.dart';
+import '../../person.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen( {Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ consetetur sadipscing elitr, sed diam nonumy eirmod tempor
 List<String> newsImages = ['drawer_header.jpg', 'bbq.jpg'];
 
 class _Home extends State<Home> {
-  Person person = Person();
+  Person person = Person()..getBaseUser();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _Home extends State<Home> {
           ),
         ],
       ),
-      drawer: getAppDrawer(person),
+      drawer: getAppDrawer(),
       body: Column( 
         children: [
           Container(
@@ -95,36 +95,10 @@ class _Home extends State<Home> {
           ),
         ],
       ),
-
-      // ERROR
-
-      //   body: Column(
-      //     children: [
-      //       const Text(
-      //         'News',
-      //         style: TextStyle(color: Colors.deepOrange, fontSize: 30.0),
-      //       ),
-      //       ListView.separated(
-      //         physics: NeverScrollableScrollPhysics(),
-      //           shrinkWrap: true,
-      //           scrollDirection: Axis.vertical,
-      //
-      //         itemCount: items.length,
-      //         separatorBuilder: (context, index) {
-      //           return const Divider();
-      //         },
-      //         itemBuilder: (context, index) {
-      //           final item = items[index];
-      //           return item;
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // );
     );
   }
 
-  getAppDrawer(person) {
+  getAppDrawer() {
     var appDrawer = AppDrawer(context,person);
     return appDrawer.buildDrawer();
   }

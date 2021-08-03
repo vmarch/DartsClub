@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../app_drawer.dart';
-import '../person.dart';
+import '../drawer/app_drawer.dart';
+import '../../person.dart';
 
 class UserProfilScreen extends StatelessWidget {
   const UserProfilScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class UserProfileHome extends StatefulWidget {
 }
 
 class _UserProfileHome extends State<UserProfileHome> {
-  Person person = Person();
+  Person person = Person()..getBaseUser();
 
   @override
   Widget build(BuildContext context) {
@@ -54,19 +54,17 @@ class _UserProfileHome extends State<UserProfileHome> {
       drawer: getAppDrawer(person),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-  
-        child: Column(
-
+          child: Column(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(person.urlPhoto),
+              backgroundImage: getUserAvatar(),
               radius: 100.0,
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Vorname:')),
                 setVerticalDivider(),
-                Text(person.firstName),
+                Text(person.name),
               ],
             ),
             Row(
@@ -94,14 +92,14 @@ class _UserProfileHome extends State<UserProfileHome> {
               children: [
                 const SizedBox(width: 50, child: Text('Name')),
                 setVerticalDivider(),
-                Text(person.firstName),
+                Text(person.name),
               ],
             ),
             Row(
               children: [
                 const SizedBox(width: 50, child: Text('Name')),
                 setVerticalDivider(),
-                Text(person.firstName),
+                Text(person.name),
               ],
             ),
             Row(
@@ -116,6 +114,15 @@ class _UserProfileHome extends State<UserProfileHome> {
       ),
     );
   }
+
+  ImageProvider<Object> getUserAvatar() {
+    if (person.assetsPhoto != "") {
+      return AssetImage(person.assetsPhoto);
+    } else {
+      return NetworkImage(person.urlPhoto);
+    }
+  }
+
 
   getAppDrawer(person) {
     var appDrawer = AppDrawer(context, person);

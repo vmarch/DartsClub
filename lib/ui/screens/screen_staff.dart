@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../app_drawer.dart';
-import '../person.dart';
-import '../staff_list.dart';
+import '../drawer/app_drawer.dart';
+import '../../person.dart';
+import '../../staff_list.dart';
 
 class StaffScreen extends StatelessWidget {
   const StaffScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class StaffHome extends StatefulWidget {
 }
 
 class _StaffHomeState extends State<StaffHome> {
-  Person person = Person();
+  Person person = Person()..getBaseUser();
   String _email = '';
   String _phone = '';
 
@@ -88,7 +88,9 @@ class _StaffHomeState extends State<StaffHome> {
                     elevation: 4,
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage(staffPerson['assetphoto']),
+
+
+                        backgroundImage: getUserAvatar(staffPerson),
                       ),
                       title: Text(staffPerson['name']),
                       subtitle: Text(staffPerson['job']),
@@ -119,6 +121,15 @@ class _StaffHomeState extends State<StaffHome> {
         ],
       ),
     );
+  }
+
+
+  ImageProvider<Object> getUserAvatar(Map<dynamic, dynamic> staffPerson) {
+    if (staffPerson['assetsPhoto'] != "") {
+     return AssetImage(staffPerson['assetsPhoto']);
+    } else {
+      return NetworkImage(staffPerson['urlPhoto']);
+    }
   }
 
 // Drawer is in separated Class.

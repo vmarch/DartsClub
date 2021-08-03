@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter_app/person.dart';
-import 'package:test_flutter_app/screens/screen_profil.dart';
-import 'package:test_flutter_app/screens/screen_staff.dart';
-import 'package:test_flutter_app/screens/screen_main.dart';
+import '../screens/screen_profil.dart';
+import '../screens/screen_staff.dart';
 
 class AppDrawer extends Drawer {
   final Person person;
@@ -11,19 +10,21 @@ class AppDrawer extends Drawer {
 
   Drawer buildDrawer() {
     return Drawer(
-      //child: Text('Hallo aus dem Drawer'),
-      child: Container(
-        color: Colors.amber[600],
-        width: 200.0,
-        child: Column(
-          children: [
-            DrawerHeader(person: person),
-            const SizedBox(
-              height: 45.0,
-            ),
-            setDivider(),
-            DrawerMenu(context: context),
-          ],
+      child: Expanded(
+        //child: Text('Hallo aus dem Drawer'),
+        child: Container(
+          color: Colors.amber[600],
+          width: 200.0,
+          child: Column(
+            children: [
+              DrawerHeader(person: person),
+              const SizedBox(
+                height: 45.0,
+              ),
+              setDivider(),
+              DrawerMenu(context: context),
+            ],
+          ),
         ),
       ),
     );
@@ -47,18 +48,26 @@ class DrawerHeader extends StatelessWidget {
           height: 40.0,
         ),
         Text(
-          person.firstName,
+          person.name,
           style: TextStyle(
             color: Colors.amber[600],
             backgroundColor: Colors.black,
           ),
         ),
         CircleAvatar(
-          backgroundImage: AssetImage(person.urlPhoto),
+          backgroundImage: getUserAvatar(),
           radius: 45.0,
         ),
       ],
     );
+  }
+
+  ImageProvider<Object> getUserAvatar() {
+    if (person.assetsPhoto != "") {
+      return AssetImage(person.assetsPhoto);
+    } else {
+      return NetworkImage(person.urlPhoto);
+    }
   }
 }
 
@@ -114,8 +123,6 @@ class DrawerMenu extends StatelessWidget {
         ),
 
         setDivider(),
-
-//Go to StaffActivity
 
         ListTile(
           title: const Text('Support'),
