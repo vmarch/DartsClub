@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../drawer/app_drawer.dart';
-import '../../person.dart';
-import '../../staff_list.dart';
+import '../../drawer/app_drawer.dart';
+import 'package:test_flutter_app/src/models/person.dart';
+import 'package:test_flutter_app/model/staff_list.dart';
 
 class StaffScreen extends StatelessWidget {
   const StaffScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class StaffHome extends StatefulWidget {
 }
 
 class _StaffHomeState extends State<StaffHome> {
-  Person person = Person()..getBaseUser();
+  Person _person = Person.dummmyPerson();
   String _email = '';
   String _phone = '';
 
@@ -51,18 +51,18 @@ class _StaffHomeState extends State<StaffHome> {
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () {
-            //TODO  print('pressed Calendar');
+              //TODO  print('pressed Calendar');
             },
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-            //TODO  print('pressed Share');
+              //TODO  print('pressed Share');
             },
           ),
         ],
       ),
-      drawer: getAppDrawer(person),
+      drawer: getAppDrawer(_person),
       body: Column(
         children: [
           const SizedBox(height: 64.0),
@@ -88,8 +88,6 @@ class _StaffHomeState extends State<StaffHome> {
                     elevation: 4,
                     child: ListTile(
                       leading: CircleAvatar(
-
-
                         backgroundImage: getUserAvatar(staffPerson),
                       ),
                       title: Text(staffPerson['name']),
@@ -107,9 +105,7 @@ class _StaffHomeState extends State<StaffHome> {
             height: 230,
           ),
           const SizedBox(height: 36.0),
-
           Container(
-         
               color: Colors.white,
               height: 50,
               child: Column(
@@ -123,10 +119,9 @@ class _StaffHomeState extends State<StaffHome> {
     );
   }
 
-
   ImageProvider<Object> getUserAvatar(Map<dynamic, dynamic> staffPerson) {
     if (staffPerson['assetsPhoto'] != "") {
-     return AssetImage(staffPerson['assetsPhoto']);
+      return AssetImage(staffPerson['assetsPhoto']);
     } else {
       return NetworkImage(staffPerson['urlPhoto']);
     }

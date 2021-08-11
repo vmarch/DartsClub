@@ -2,25 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewsItem {
-  final String itemTitle;
-  final String itemMessage;
-  final String imgPath;
+  String itemTitle = '';
+  String itemMessage = '';
+  String imgPath = '';
 
-  NewsItem(
-      BuildContext context, this.itemTitle, this.itemMessage, this.imgPath);
+  NewsItem(this.itemTitle, this.itemMessage, this.imgPath);
 
-  Widget createNewItem(BuildContext context) {
+  NewsItem.dummyNewsItem() {
+    itemTitle = 'Unser Team ist super!';
+    itemMessage = '''Lorem ipsum dolor sit amet, 
+consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+ invidunt ut labore et dolore magna aliquyam erat, sed diam 
+ voluptua. At vero eos et accusam et''';
+    imgPath = 'drawer_header.jpg';
+  }
+
+  Widget createNewItem() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildTitle(context),
-        _buildMessage(context),
-        _buildImage(context),
+        _buildTitle(),
+        _buildMessage(),
+        _buildImage(),
       ],
     );
   }
 
-  Widget _buildTitle(BuildContext context) {
+  Widget _buildTitle() {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
@@ -36,7 +44,7 @@ class NewsItem {
     );
   }
 
-  Widget _buildMessage(BuildContext context) {
+  Widget _buildMessage() {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
@@ -51,7 +59,7 @@ class NewsItem {
     );
   }
 
-  Widget _buildImage(BuildContext context) {
+  Widget _buildImage() {
     return Image.asset(
       imgPath,
     );

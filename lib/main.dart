@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter_app/src/ui/screens/authenticate/screen_authenticate.dart';
+import 'package:test_flutter_app/src/wrapper.dart';
+import 'package:test_flutter_app/src/ui/screens/home/screen_main.dart';
+import 'package:test_flutter_app/src/ui/screens/home/screen_profil.dart';
+import 'package:test_flutter_app/src/ui/screens/home/screen_staff.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-import 'ui/screens/screen_main.dart';
-import 'ui/screens/screen_profil.dart';
-import 'ui/screens/screen_staff.dart';
+
 //import 'dart:io';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MaterialApp(
+     
       title: 'Dart Club "stich e.V."',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
-      initialRoute: 'mainScreen',
+      // initialRoute: 'authScreen',
       routes: {
+        'authScreen': (context) => const AuthenticateScreen(),
         'mainScreen': (context) => const MainScreen(),
         'staffScreen': (context) => const StaffScreen(),
         'userProfilScreen': (context) => const UserProfilScreen(),
       },
+      home: const Wrapper(),
     ),
   );
   // print('System: ${Platform.operatingSystem} ');

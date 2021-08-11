@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "611395437749",
+    "project_id": "darts-club",
+    "storage_bucket": "darts-club.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611395437749:android:fbaf0501929818f8f7eafc",
+        "android_client_info": {
+          "package_name": "com.vmarch.darts_club"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611395437749-p8dhnfkta6h7mlbqhsjv8gtsgc82boat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC904jdtwdBq8fu2zFikg5_vPAsSvpacSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611395437749-p8dhnfkta6h7mlbqhsjv8gtsgc82boat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

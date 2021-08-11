@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/person.dart';
-import '../screens/screen_profil.dart';
-import '../screens/screen_staff.dart';
+import 'package:test_flutter_app/src/blocks/auth_bloc.dart';
+import 'package:test_flutter_app/src/models/person.dart';
+import '../screens/home/screen_staff.dart';
 
 class AppDrawer extends Drawer {
   final Person person;
@@ -10,21 +10,24 @@ class AppDrawer extends Drawer {
 
   Drawer buildDrawer() {
     return Drawer(
-      child: Expanded(
-        //child: Text('Hallo aus dem Drawer'),
-        child: Container(
-          color: Colors.amber[600],
-          width: 200.0,
-          child: Column(
-            children: [
-              DrawerHeader(person: person),
-              const SizedBox(
-                height: 45.0,
+      child: Container(
+        color: Colors.amber[600],
+        width: 200.0,
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  DrawerHeader(person: person),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  setDivider(),
+                  DrawerMenu(context: context),
+                ],
               ),
-              setDivider(),
-              DrawerMenu(context: context),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -43,9 +46,13 @@ class DrawerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset('drawer_header.jpg'),
+        Image.asset('assets/drawer_header.jpg'),
         const SizedBox(
-          height: 40.0,
+          height: 16.0,
+        ),
+        CircleAvatar(
+          radius: 45.0,
+          backgroundImage: getUserAvatar(),
         ),
         Text(
           person.name,
@@ -54,17 +61,13 @@ class DrawerHeader extends StatelessWidget {
             backgroundColor: Colors.black,
           ),
         ),
-        CircleAvatar(
-          backgroundImage: getUserAvatar(),
-          radius: 45.0,
-        ),
       ],
     );
   }
 
   ImageProvider<Object> getUserAvatar() {
     if (person.assetsPhoto != "") {
-      return AssetImage(person.assetsPhoto);
+      return AssetImage('assets/personsphoto/${person.assetsPhoto}');
     } else {
       return NetworkImage(person.urlPhoto);
     }
@@ -81,20 +84,8 @@ class DrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+      return Column(
       children: [
-        ListTile(
-          title: const Text('Profil'),
-          leading: const Icon(Icons.portrait_rounded),
-          trailing: const Icon(Icons.arrow_forward),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const UserProfilScreen()),
-            );
-          },
-        ),
-
         ListTile(
           title: const Text('News'),
           leading: const Icon(Icons.event_available),
@@ -103,7 +94,6 @@ class DrawerMenu extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-
         ListTile(
           title: const Text('Bestenliste'),
           leading: const Icon(Icons.emoji_events),
@@ -112,7 +102,6 @@ class DrawerMenu extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-
         ListTile(
           title: const Text('Mitglieder'),
           leading: const Icon(Icons.family_restroom_rounded),
@@ -121,9 +110,7 @@ class DrawerMenu extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-
         setDivider(),
-
         ListTile(
           title: const Text('Support'),
           leading: const Icon(Icons.support_agent_rounded),
@@ -135,7 +122,6 @@ class DrawerMenu extends StatelessWidget {
             );
           },
         ),
-
         ListTile(
           title: const Text('Einstellungen'),
           leading: const Icon(Icons.settings),
@@ -144,13 +130,12 @@ class DrawerMenu extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-
         setDivider(),
         ListTile(
           title: const Text('Logout'),
           leading: const Icon(Icons.logout),
           onTap: () {
-            Navigator.pop(context);
+            _pushPage(context, authBloc.signOut());
           },
         ),
       ],
@@ -163,5 +148,12 @@ Divider setDivider() {
     height: 8.0,
     thickness: 1.0,
     color: Colors.grey[700],
+  );
+}
+
+void _pushPage(BuildContext context, Widget page) {
+
+  Navigator.of(context) /*!*/ .push(
+    MaterialPageRoute<void>(builder: (_) => page),
   );
 }

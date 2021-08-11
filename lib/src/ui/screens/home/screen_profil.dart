@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../drawer/app_drawer.dart';
-import '../../person.dart';
+import '../../drawer/app_drawer.dart';
+import 'package:test_flutter_app/src/models/person.dart';
 
 class UserProfilScreen extends StatelessWidget {
   const UserProfilScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class UserProfileHome extends StatefulWidget {
 
 class _UserProfileHome extends State<UserProfileHome> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Person _person = Person()..getBaseUser();
+  Person _person = Person.dummmyPerson();
 
   Future<void> _getPrefPerson() async {
     SharedPreferences pref = await _prefs;
@@ -86,7 +86,7 @@ class _UserProfileHome extends State<UserProfileHome> {
               children: [
                 const SizedBox(width: 50, child: Text('Nachname:')),
                 setVerticalDivider(),
-                Text(_person.surName),
+                Text(_person.surname),
               ],
             ),
             Row(
