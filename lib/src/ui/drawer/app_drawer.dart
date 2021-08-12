@@ -135,7 +135,7 @@ class DrawerMenu extends StatelessWidget {
           title: const Text('Logout'),
           leading: const Icon(Icons.logout),
           onTap: () {
-            _pushPage(context, authBloc.signOut());
+             authBloc.signOut(context);
           },
         ),
       ],

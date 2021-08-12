@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/src/ui/screens/authenticate/screen_authenticate.dart';
 import 'package:test_flutter_app/src/ui/screens/authenticate/screen_login.dart';
 import 'package:test_flutter_app/src/wrapper.dart';
 import 'package:test_flutter_app/src/ui/screens/home/screen_main.dart';
@@ -17,9 +16,8 @@ Future<void> main() async {
     MaterialApp(
     //  debugShowCheckedModeBanner: false,
       title: 'Dart Club "stich e.V."',
-      initialRoute: 'loginScreen',
+      // initialRoute: 'loginScreen',
       routes: {
-        'authScreen': (context) => const AuthenticateScreen(),
         'loginScreen': (context) => const LoginScreen(),
         'mainScreen': (context) => const MainScreen(),
         'staffScreen': (context) => const StaffScreen(),

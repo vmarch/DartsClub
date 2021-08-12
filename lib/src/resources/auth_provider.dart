@@ -24,9 +24,9 @@ class AuthProvider {
     StreamSubscription<User?> sbs =
         _auth.authStateChanges().listen((User? user) {
       if (user == null) {
-        print('User is currently signed out!');
+        print('AuthProvider>>> User is currently signed out!');
       } else {
-        print('User is signed in!');
+        print('AuthProvider>>> User is signed in!');
       }
       _inAppUser = _userFromFirebaseUser(user);
 
@@ -44,61 +44,78 @@ class AuthProvider {
   }
 
   InAppUser? _userFromFirebaseUser(User? user) {
+    print('AuthProvider>>> my user: ' + user.toString());
+
     return user != null ? InAppUser(uid: user.uid) : null;
   }
 
 // sign in anon
 
   Future<InAppUser?> signInAnon() async {
+    
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInAnonymously();
+
       _inAppUser = _userFromFirebaseUser(userCredential.user);
       // User? user = userCredential.user;
       if (_inAppUser == null) {
-        print('User is currently signed out!');
+        print('AuthProvider>>>  User is currently signed out!');
       } else {
-        print('User is signed in!');
+        print('AuthProvider>>>  User is signed in!');
       }
       return _inAppUser;
     } catch (e) {
+      print('AuthProvider>>> $e');
       return null;
     }
   }
 
 // sign in with Email and Password
 
-  Future signInEmailAndPass(String userEmail, String userPass) async {
+  Future<Map<String, dynamic>> signInEmailAndPass(
+      String userEmail, String userPass) async {
+    var errorCode = '';
+    var errorMessage = '';
+
+    var loginInfo = <String, dynamic>{};
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: "barry.allen@example.com",
-              password: "SuperSecretPassword!2");
+          .signInWithEmailAndPassword(email: userEmail, password: userPass);
+      _inAppUser = _userFromFirebaseUser(userCredential.user);
+      loginInfo['user'] = _inAppUser;
+      loginInfo['errorCode'] = errorCode;
+      loginInfo['errorMessage'] = errorMessage;
+      return loginInfo;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      loginInfo['errorCode'] = e.code;
+      loginInfo['errorMessage'] = e.message ?? '';
+      return loginInfo;
     }
   }
 
 // register with Email and Password
 
-  Future registerNewUser(String userEmail, String userPass) async {
+  Future<Map<String, dynamic>> registerNewUser(
+      String userEmail, String userPass) async {
+    var errorCode = '';
+    var errorMessage = '';
+
+    var registerInfo = <String, dynamic>{};
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: "barry.allen@example.com",
-              password: "SuperSecretPassword!");
+          .createUserWithEmailAndPassword(email: userEmail, password: userPass);
+      _inAppUser = _userFromFirebaseUser(userCredential.user);
+      registerInfo['user'] = _inAppUser;
+      registerInfo['errorCode'] = errorCode;
+      registerInfo['errorMessage'] = errorMessage;
+      return registerInfo;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
+      registerInfo['errorCode'] = e.code;
+     registerInfo['errorMessage'] = e.message ?? '';
+      return registerInfo;
     }
   }
 

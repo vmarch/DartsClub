@@ -16,36 +16,23 @@ class Repository {
   //   _inAppUser = inAppUser;
   // }
 
-  InAppUser? get currentUser {
-    return _inAppUser;
-  }
-
   Stream<InAppUser?> getLoggedUser() async* {
-    print('repository 1');
-
-    bool isResponced = false;
+      bool isResponced = false;
     bool closeStream = false;
 
     StreamSubscription<InAppUser?> sbs =
         _authProvider.getLoggedUser().listen((inAppUser) {
-        
-      print('repository 2');
-
-      _inAppUser = inAppUser;
+        _inAppUser = inAppUser;
       isResponced = true;
-      print('repository 3');
-    });
-    print('repository 4');
-    while (!closeStream) {
+          });
+      while (!closeStream) {
       if (isResponced) {
         closeStream = true;
         sbs.cancel();
-          print('repository 5');
-        break;
+               break;
       }
       await Future.delayed((const Duration(milliseconds: 300)));
-          print('repository 6');
-      yield _inAppUser;
+          yield _inAppUser;
     }
   }
 
@@ -59,11 +46,11 @@ class Repository {
     return await _authProvider.signInAnon();
   }
 
-  Future<dynamic> signInEmailAndPass(String userEmail, String userPass) async {
+  Future<Map<String,dynamic>> signInEmailAndPass(String userEmail, String userPass) async {
     return await _authProvider.signInEmailAndPass(userEmail, userPass);
   }
 
-  Future<dynamic> registerNewUser(String userEmail, String userPass) async {
+Future<Map<String,dynamic>> registerNewUser(String userEmail, String userPass) async {
     return await _authProvider.registerNewUser(userEmail, userPass);
   }
 

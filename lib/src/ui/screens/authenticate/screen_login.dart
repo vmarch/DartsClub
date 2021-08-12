@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter_app/src/blocks/auth_bloc.dart';
-import 'package:test_flutter_app/src/models/login_enum.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,9 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordFilter = new TextEditingController();
   final TextEditingController _passwordRepeatFilter =
       new TextEditingController();
-
-  FormType _form = FormType.login;
   bool _registerVisible = false;
+  String _error = '';
 
   // our default setting is to login, and we should switch to creating an account when the user chooses to
 
@@ -117,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Login Page"),
       ),
       body: SingleChildScrollView(
@@ -124,8 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Visibility(
               visible: _registerVisible,
-              child: Padding(
-                padding: const EdgeInsets.only(
+              child: const Padding(
+                padding: EdgeInsets.only(
                     left: 32.0, right: 32.0, top: 24, bottom: 12),
                 child: Text(
                   'New User',
@@ -137,11 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Visibility(
               visible: !_registerVisible,
               child: Padding(
-                padding: const EdgeInsets.only(top: 24.0, bottom: 24.0),
+                padding: const EdgeInsets.only(top: 24.0, bottom: 21.0),
                 child: Center(
                   child: Container(
-                      width: 200,
-                      height: 150,
+                      width: 250,
+                      height: 100,
                       // decoration: BoxDecoration(
                       //     color: Colors.red,
                       //     borderRadius: BorderRadius.circular(50.0)),
@@ -160,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _firstNameFilter,
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'First name',
                       hintText: 'Enter your First name'),
@@ -175,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _lastNameFilter,
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Last name',
                       hintText: 'Enter your Last name'),
@@ -190,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _nickFilter,
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
                       hintText: 'Enter your Username (nickname)'),
@@ -206,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _cityFilter,
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'City',
                       hintText: 'Enter city where are you living'),
@@ -222,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _phoneFilter,
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Phone',
                       hintText: 'Enter your phone number'),
@@ -238,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: TextField(
                 controller: _emailFilter,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter valid email id as abc@gmail.com'),
@@ -250,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: TextField(
                 controller: _passwordFilter,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter secure password'),
@@ -265,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextField(
                   controller: _passwordRepeatFilter,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password repeat',
                       hintText: 'Repeat your password'),
@@ -279,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   _passwordReset();
                 },
-                child: Text(
+                child: const Text(
                   'Forgot Password',
                   style: TextStyle(color: Colors.blue, fontSize: 15),
                 ),
@@ -294,10 +293,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () {
-                    _loginBtnPressed();
+                  onPressed: () async {
+                    String msg = await _login();
+                    if (msg != '') {
+                      final snackBar = SnackBar(
+                        content: Text(msg),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      print('LoginScreen>>> $msg');
+                    }
                   },
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
@@ -314,70 +320,91 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () {
-                    _registerBtnPressed();
+               onPressed: () async {
+                    String msg = await _register();
+                    if (msg != '') {
+                      final snackBar = SnackBar(
+                        content: Text(msg),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      print('LoginScreen>>> $msg');
+                    }
                   },
-                  child: Text(
+                  child: const Text(
                     'Register',
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
 
             Visibility(
               visible: !_registerVisible,
               child: TextButton(
-                child: Text('New User? Click here to register.'),
-                onPressed: _tryToRegisterBtnPressed,
+                child: const Text('New User? Click here to register.'),
+                onPressed: _tryToRegister,
               ),
             ),
             Visibility(
               visible: _registerVisible,
               child: TextButton(
-                child: Text('Have an account? Click here to login.'),
+                child: const Text('Have an account? Click here to login.'),
                 onPressed: _tryToLogin,
               ),
-            )
+            ),
+            const Text('or'),
+            TextButton(
+              child: const Text('Login as Anonym.'),
+              onPressed: _loginAsAnonym,
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _loginBtnPressed() {
-
-    authBloc.login(context);
-    print('The user wants to login with email and password');
+  Future<String> _login() async {
+    print('ScreenLogin >>> The user wants to login with email and password');
+    return await authBloc.login(context);
   }
 
-  void _registerBtnPressed() {
-    print('The user wants to register with email and password');
+   Future<String> _register() async{
+    print('ScreenLogin >>>The user wants to register with email and password');
+    return await  authBloc.register(context);
   }
 
   void _passwordReset() {
-    print("The user wants a password reset request sent to email");
+    print(
+        "ScreenLogin >>>The user wants a password reset request sent to email");
   }
 
-  void _tryToRegisterBtnPressed() {
+  void _tryToRegister() {
     addRegistersListeners();
-    print('Change to Registrations form');
+    print('ScreenLogin >>>Change to Registrations form');
     setState(() {
       _registerVisible = true;
     });
   }
 
   void _tryToLogin() {
-    clearRegisterFields();
-    clearRegistersListener();
+    cleanRegisterFields();
+    cleanRegistersListener();
     authBloc.cleanFormData();
-    print('Change to Login form');
+    print('ScreenLogin >>>Change to Login form');
     setState(() {
       _registerVisible = false;
     });
+  }
+
+  void _loginAsAnonym() {
+    print('ScreenLogin >>>The user wants to login as Anonym');
+    cleanRegisterFields();
+    cleanLoginFields();
+    cleanRegistersListener();
+    authBloc.loginAnonym(context);
   }
 
   void addRegistersListeners() {
@@ -389,7 +416,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordRepeatFilter.addListener(_passwordRepeatListen);
   }
 
-  void clearRegistersListener() {
+  void cleanRegistersListener() {
     _firstNameFilter.removeListener(_firstNameListen);
     _lastNameFilter.removeListener(_lastNameListen);
     _nickFilter.removeListener(_nickListen);
@@ -398,7 +425,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordRepeatFilter.removeListener(_passwordRepeatListen);
   }
 
-  void clearRegisterFields() {
+  void cleanLoginFields() {
+    _emailFilter.clear();
+    _passwordFilter.clear();
+  }
+
+  void cleanRegisterFields() {
     _firstNameFilter.clear();
     _lastNameFilter.clear();
     _nickFilter.clear();
