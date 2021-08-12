@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test_flutter_app/src/models/in_app_user.dart';
 
 class AuthProvider {
 //create user based on FirebaseUser
   final FirebaseAuth _auth = FirebaseAuth.instance;
+ 
   InAppUser? _inAppUser;
 
   // Stream<InAppUser?> currentUser() async* {

@@ -151,13 +151,9 @@ class AuthenticateBloc implements Bloc {
         await _repository.signInEmailAndPass(userEmail, userPass);
 
     if (result['user'] != null && result['user'].uid.isNotEmpty) {
-      InAppUser inAppUser = result['user'];
+      _inAppUser = result['user'];
 
-      inAppUser.email = _email;
-      inAppUser.password = _password;
-
-//TODO do something with UsersData from InAppUser.
-
+      _fillInAppUser();
       _pushPage(context!, const MainScreen());
       return '';
     } else {
@@ -177,16 +173,10 @@ class AuthenticateBloc implements Bloc {
         await _repository.registerNewUser(userEmail, userPass);
 
     if (result['user'] != null && result['user'].uid.isNotEmpty) {
-      InAppUser inAppUser = result['user'];
+      _inAppUser = result['user'];
 
-      inAppUser.email = _email;
-      inAppUser.password = _password;
-
-//TODO do something with UsersData from InAppUser.
-
-//////////////////////////////////////////////////////////////////////
       registerOnServer();
-//////////////////////////////////////////////////////////////////////
+
       return 'After registration on server you will transfer to HomePage of Darts-Club App';
     } else {
       String errorCode = result['errorCode'];
@@ -200,8 +190,31 @@ class AuthenticateBloc implements Bloc {
     }
   }
 
+  InAppUser _fillInAppUser() {
+    if (_firstName.isNotEmpty) {
+      _inAppUser!.firstName = _firstName;
+    }
+    if (_lastName.isNotEmpty) {
+      _inAppUser!.lastName = _lastName;
+    }
+    if (_nick.isNotEmpty) {
+      _inAppUser!.nick = _nick;
+    }
+    if (_city.isNotEmpty) {
+      _inAppUser!.city = _city;
+    }
+    if (_phone.isNotEmpty) {
+      _inAppUser!.phone = _phone;
+    }
+    _inAppUser!.email = _email;
+    _inAppUser!.password = _password;
+
+    return _inAppUser!;
+  }
+
   void registerOnServer() {
-    // _pushPage(context!, const MainScreen());
+    _repository.putUserIntoFireBase(_fillInAppUser());
+    _pushPage(context!, const MainScreen());
   }
 
   Future<String> login(BuildContext ctx) async {

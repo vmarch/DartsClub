@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:test_flutter_app/src/models/in_app_user.dart';
 import 'package:test_flutter_app/src/resources/auth_provider.dart';
+import 'package:test_flutter_app/src/resources/users_provider.dart';
 
 import 'news_provider.dart';
 
 class Repository {
   final _newsProvider = NewsProvider();
+  final _usersProvider = UsersProvider();
 
   final _authProvider = AuthProvider();
 
@@ -52,6 +54,11 @@ class Repository {
 
 Future<Map<String,dynamic>> registerNewUser(String userEmail, String userPass) async {
     return await _authProvider.registerNewUser(userEmail, userPass);
+  }
+
+
+  Future<void> putUserIntoFireBase(InAppUser inAppUser)async{
+    return await _usersProvider.updateUserFromUserItem(inAppUser);
   }
 
   Future<dynamic> signOut() async {
