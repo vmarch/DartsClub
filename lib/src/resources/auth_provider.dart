@@ -67,6 +67,7 @@ class AuthProvider {
   }
 
 // sign in with Email and Password
+
   Future signInEmailAndPass(String userEmail, String userPass) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
