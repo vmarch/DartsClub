@@ -24,16 +24,16 @@ class InAppUser {
     String urlPhoto = '',
     String password = '',
   }) {
-    this._uid = uid;
-    this._firstName = firstName;
-    this._lastName = lastName;
-    this._nick = nick;
-    this._city = city;
-    this._phone = phone;
-    this._email = email;
-    this._assetsPhoto = assetsPhoto;
-    this._urlPhoto = urlPhoto;
-    this._password = password;
+    _uid = uid;
+    _firstName = firstName;
+    _lastName = lastName;
+    _nick = nick;
+    _city = city;
+    _phone = phone;
+    _email = email;
+    _assetsPhoto = assetsPhoto;
+    _urlPhoto = urlPhoto;
+    _password = password;
   }
 
   String get uid => _uid;
