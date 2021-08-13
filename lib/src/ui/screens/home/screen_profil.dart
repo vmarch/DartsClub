@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
 import 'package:test_flutter_app/src/models/in_app_user.dart';
+import 'package:test_flutter_app/src/ui/drawer/app_drawer.dart';
 
-import '../../drawer/app_drawer.dart';
-import 'package:test_flutter_app/src/models/person.dart';
+
 
 class UserProfilScreen extends StatelessWidget {
   const UserProfilScreen({Key? key}) : super(key: key);
@@ -80,72 +79,74 @@ class _UserProfileHome extends State<UserProfileHome> {
         child: Column(
           children: [
             Padding(
-          padding: const EdgeInsets.only(top:16.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: Image(
                 image: getUserAvatar(),
                 height: 100.0,
                 width: 100.0,
               ),
             ),
-            Divider(color: Colors.grey,height: 16.0,),
+            const Divider(
+              color: Colors.grey,
+              height: 16.0,
+            ),
             Row(
               children: [
-                Expanded(
-                  child: Container(height: 24, child: const Text('Vorname:')),
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('Vorname:')),
                 ),
                 Expanded(
-                  child: Container(height: 24,child: Text(_person!.firstName)),
+                  child: SizedBox(height: 24, child: Text(_person!.firstName)),
                 ),
               ],
             ),
             Row(
               children: [
-                Expanded(
-                  child: Container(height: 24,child: const Text('Nachname:')),
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('Nachname:')),
                 ),
                 Expanded(
-                  child: Container(height: 24,child: Text(_person!.lastName)),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(height: 24,child: const Text('E-Mail:')),
-                ),
-                Expanded(
-                  child: Container(height: 24,child: Text(_person!.email)),
-                ),
-              ],
-            ),
-            
-            Row(
-              children: [
-                Expanded(
-                  child: Container(height: 24,child: const Text('Phone:')),
-                ),
-                Expanded(
-                  child: Container(height: 24,child: Text(_person!.phone)),
+                  child: SizedBox(height: 24, child: Text(_person!.lastName)),
                 ),
               ],
             ),
             Row(
               children: [
-                Expanded(
-                  child: Container(height: 24,child: const Text('City')),
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('E-Mail:')),
                 ),
                 Expanded(
-                  child: Container(height: 24,child: Text(_person!.city)),
+                  child: SizedBox(height: 24, child: Text(_person!.email)),
                 ),
               ],
             ),
             Row(
               children: [
-                Expanded(
-                  child: Container(height: 24,child: const Text('Passwort')),
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('Phone:')),
                 ),
                 Expanded(
-                  child: Container(height: 24,child: Text(_person!.password)),
+                  child: SizedBox(height: 24, child: Text(_person!.phone)),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('City')),
+                ),
+                Expanded(
+                  child: SizedBox(height: 24, child: Text(_person!.city)),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Expanded(
+                  child: SizedBox(height: 24, child: Text('Passwort')),
+                ),
+                Expanded(
+                  child: SizedBox(height: 24, child: Text(_person!.password)),
                 ),
               ],
             ),
@@ -158,11 +159,10 @@ class _UserProfileHome extends State<UserProfileHome> {
   ImageProvider<Object> getUserAvatar() {
     if (_person!.assetsPhoto != "") {
       return AssetImage(_person!.assetsPhoto);
-    } else if (_person!.urlPhoto != ""){
+    } else if (_person!.urlPhoto != "") {
       return NetworkImage(_person!.urlPhoto);
-    }else{
-return AssetImage('assets/user_anon.png');
-    
+    } else {
+      return const AssetImage('assets/user_anon.png');
     }
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
 import 'package:test_flutter_app/src/models/in_app_user.dart';
 import '../../drawer/app_drawer.dart';
-import 'package:test_flutter_app/src/models/person.dart';
+
 import 'package:test_flutter_app/model/staff_list.dart';
 
 class StaffScreen extends StatelessWidget {
