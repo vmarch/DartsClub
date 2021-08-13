@@ -13,7 +13,8 @@ class StaffList {
       'phone': '0171/50584',
       'email': 'maria_tormann@stich.de',
       'assetsPhoto': 'personsphoto/david-bares-816.jpeg',
-      'urlPhoto': 'https://images.pexels.com/users/avatars/42311/david-bares-816.jpeg?auto=compress&fit=crop&h=256&w=256'
+      'urlPhoto':
+          'https://images.pexels.com/users/avatars/42311/david-bares-816.jpeg?auto=compress&fit=crop&h=256&w=256'
     });
 
     _staffList.add({

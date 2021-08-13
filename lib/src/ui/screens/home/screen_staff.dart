@@ -3,7 +3,7 @@ import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
 import 'package:test_flutter_app/src/models/in_app_user.dart';
 import '../../drawer/app_drawer.dart';
 
-import 'package:test_flutter_app/model/staff_list.dart';
+import 'package:test_flutter_app/src/models/staff_list.dart';
 
 class StaffScreen extends StatelessWidget {
   const StaffScreen({Key? key}) : super(key: key);
@@ -27,7 +27,6 @@ class _StaffHomeState extends State<StaffHome> {
   InAppUser? _person = InAppUser();
   String _email = '';
   String _phone = '';
-
 
   Future<void> _getcurrentUser() async {
     InAppUser? person = await dartsBloc.getCurrentLoggedUser();
@@ -53,7 +52,6 @@ class _StaffHomeState extends State<StaffHome> {
     super.initState();
     _getcurrentUser();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +85,13 @@ class _StaffHomeState extends State<StaffHome> {
       drawer: getAppDrawer(_person),
       body: Column(
         children: [
-         
           Padding(
             padding: const EdgeInsets.only(top: 24, bottom: 24),
             child: Container(
               alignment: Alignment.center,
               child: const Text(
                 'Staff',
-                style: TextStyle( fontSize: 30.0),
+                style: TextStyle(fontSize: 30.0),
               ),
             ),
           ),
