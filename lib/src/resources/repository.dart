@@ -4,19 +4,14 @@ import 'package:test_flutter_app/src/models/in_app_user.dart';
 import 'package:test_flutter_app/src/resources/auth_provider.dart';
 import 'package:test_flutter_app/src/resources/users_provider.dart';
 
-import 'news_provider.dart';
 
 class Repository {
-  final _newsProvider = NewsProvider();
+ 
   final _usersProvider = UsersProvider();
 
   final _authProvider = AuthProvider();
 
   InAppUser? _inAppUser;
-
-  // set currentUser(InAppUser? inAppUser) {
-  //   _inAppUser = inAppUser;
-  // }
 
   Stream<InAppUser?> getLoggedUser() async* {
       bool isResponced = false;
@@ -38,12 +33,6 @@ class Repository {
     }
   }
 
-  // Future<InAppUser?> checkCurrentUser() async {
-  //   _inAppUser = await _authProvider.getLoggedUser();
-
-  //   return _authProvider.getLoggedUser();
-  // }
-
   Future<InAppUser?> authenticateAnon() async {
     return await _authProvider.signInAnon();
   }
@@ -57,11 +46,15 @@ Future<Map<String,dynamic>> registerNewUser(String userEmail, String userPass) a
   }
 
 
-  Future<void> putUserIntoFireBase(InAppUser inAppUser)async{
+  Future<void> putUserIntoDB(InAppUser inAppUser)async{
     return await _usersProvider.updateUserFromUserItem(inAppUser);
   }
 
   Future<dynamic> signOut() async {
     return await _authProvider.signOut();
+  }
+
+  Future<InAppUser?> getCurrentUserFromDB(String uid) async {
+    return await _usersProvider.getCurrentUserFromFireBase(uid);
   }
 }

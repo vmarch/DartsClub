@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/src/blocks/auth_bloc.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -48,65 +48,65 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _firstNameListen() {
     if (_firstNameFilter.text.isEmpty) {
-      authBloc.firstName("");
+      dartsBloc.firstName("");
     } else {
-      authBloc.firstName(_firstNameFilter.text);
+      dartsBloc.firstName(_firstNameFilter.text);
     }
   }
 
   void _lastNameListen() {
     if (_lastNameFilter.text.isEmpty) {
-      authBloc.lastName("");
+      dartsBloc.lastName("");
     } else {
-      authBloc.lastName(_lastNameFilter.text);
+      dartsBloc.lastName(_lastNameFilter.text);
     }
   }
 
   void _nickListen() {
     if (_nickFilter.text.isEmpty) {
-      authBloc.nick("");
+      dartsBloc.nick("");
     } else {
-      authBloc.nick(_nickFilter.text);
+      dartsBloc.nick(_nickFilter.text);
     }
   }
 
   void _cityListen() {
     if (_cityFilter.text.isEmpty) {
-      authBloc.city("");
+      dartsBloc.city("");
     } else {
-      authBloc.city(_cityFilter.text);
+      dartsBloc.city(_cityFilter.text);
     }
   }
 
   void _phoneListen() {
     if (_phoneFilter.text.isEmpty) {
-      authBloc.phone("");
+      dartsBloc.phone("");
     } else {
-      authBloc.phone(_phoneFilter.text);
+      dartsBloc.phone(_phoneFilter.text);
     }
   }
 
   void _emailListen() {
     if (_emailFilter.text.isEmpty) {
-      authBloc.email("");
+      dartsBloc.email("");
     } else {
-      authBloc.email(_emailFilter.text);
+      dartsBloc.email(_emailFilter.text);
     }
   }
 
   void _passwordListen() {
     if (_passwordFilter.text.isEmpty) {
-      authBloc.password("");
+      dartsBloc.password("");
     } else {
-      authBloc.password(_passwordFilter.text);
+      dartsBloc.password(_passwordFilter.text);
     }
   }
 
   void _passwordRepeatListen() {
     if (_passwordRepeatFilter.text.isEmpty) {
-      authBloc.passwordRepeat("");
+      dartsBloc.passwordRepeat("");
     } else {
-      authBloc.passwordRepeat(_passwordRepeatFilter.text);
+      dartsBloc.passwordRepeat(_passwordRepeatFilter.text);
     }
   }
 
@@ -368,12 +368,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String> _login() async {
     print('ScreenLogin >>> The user wants to login with email and password');
-    return await authBloc.login(context);
+    return await dartsBloc.login(context);
   }
 
    Future<String> _register() async{
     print('ScreenLogin >>>The user wants to register with email and password');
-    return await  authBloc.register(context);
+    return await  dartsBloc.register(context);
   }
 
   void _passwordReset() {
@@ -392,7 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _tryToLogin() {
     cleanRegisterFields();
     cleanRegistersListener();
-    authBloc.cleanFormData();
+    dartsBloc.cleanFormData();
     print('ScreenLogin >>>Change to Login form');
     setState(() {
       _registerVisible = false;
@@ -404,7 +404,7 @@ class _LoginScreenState extends State<LoginScreen> {
     cleanRegisterFields();
     cleanLoginFields();
     cleanRegistersListener();
-    authBloc.loginAnonym(context);
+    dartsBloc.loginAnonym(context);
   }
 
   void addRegistersListeners() {

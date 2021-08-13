@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
+import 'package:test_flutter_app/src/models/in_app_user.dart';
 
 import '../../drawer/app_drawer.dart';
 import 'package:test_flutter_app/src/models/person.dart';
@@ -23,13 +25,19 @@ class UserProfileHome extends StatefulWidget {
 }
 
 class _UserProfileHome extends State<UserProfileHome> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Person _person = Person.dummmyPerson();
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  InAppUser? _person = InAppUser();
 
   Future<void> _getPrefPerson() async {
-    SharedPreferences pref = await _prefs;
+    // SharedPreferences pref = await _prefs;
+    InAppUser? person = await dartsBloc.getCurrentLoggedUser();
+
     setState(() {
-      _person = pref.get('person') as Person;
+      if (person != null && person.firstName.isNotEmpty) {
+        _person = person;
+      } else {
+        _person!.firstName = 'Inkognito';
+      }
     });
   }
 
@@ -55,13 +63,13 @@ class _UserProfileHome extends State<UserProfileHome> {
           IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () {
-            //TODO  print('pressed Calendar');
+              //TODO  print('pressed Calendar');
             },
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-            //TODO  print('pressed Share');
+              //TODO  print('pressed Share');
             },
           ),
         ],
@@ -71,57 +79,74 @@ class _UserProfileHome extends State<UserProfileHome> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: getUserAvatar(),
-              radius: 100.0,
+            Padding(
+          padding: const EdgeInsets.only(top:16.0),
+              child: Image(
+                image: getUserAvatar(),
+                height: 100.0,
+                width: 100.0,
+              ),
             ),
+            Divider(color: Colors.grey,height: 16.0,),
             Row(
               children: [
-                const SizedBox(width: 50, child: Text('Vorname:')),
-                setVerticalDivider(),
-                Text(_person.name),
+                Expanded(
+                  child: Container(height: 24, child: const Text('Vorname:')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.firstName)),
+                ),
               ],
             ),
             Row(
               children: [
-                const SizedBox(width: 50, child: Text('Nachname:')),
-                setVerticalDivider(),
-                Text(_person.surname),
+                Expanded(
+                  child: Container(height: 24,child: const Text('Nachname:')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.lastName)),
+                ),
               ],
             ),
             Row(
               children: [
-                const SizedBox(width: 50, child: Text('E-Mail:')),
-                setVerticalDivider(),
-                Text(_person.email),
+                Expanded(
+                  child: Container(height: 24,child: const Text('E-Mail:')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.email)),
+                ),
+              ],
+            ),
+            
+            Row(
+              children: [
+                Expanded(
+                  child: Container(height: 24,child: const Text('Phone:')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.phone)),
+                ),
               ],
             ),
             Row(
               children: [
-                const SizedBox(width: 50, child: Text('Status:')),
-                setVerticalDivider(),
-                Text(_person.staff ? _person.job : 'Mitglied'),
+                Expanded(
+                  child: Container(height: 24,child: const Text('City')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.city)),
+                ),
               ],
             ),
             Row(
               children: [
-                const SizedBox(width: 50, child: Text('Name')),
-                setVerticalDivider(),
-                Text(_person.name),
-              ],
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 50, child: Text('Name')),
-                setVerticalDivider(),
-                Text(_person.name),
-              ],
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 50, child: Text('Passwort')),
-                setVerticalDivider(),
-                const Text('*********'),
+                Expanded(
+                  child: Container(height: 24,child: const Text('Passwort')),
+                ),
+                Expanded(
+                  child: Container(height: 24,child: Text(_person!.password)),
+                ),
               ],
             ),
           ],
@@ -131,23 +156,18 @@ class _UserProfileHome extends State<UserProfileHome> {
   }
 
   ImageProvider<Object> getUserAvatar() {
-    if (_person.assetsPhoto != "") {
-      return AssetImage(_person.assetsPhoto);
-    } else {
-      return NetworkImage(_person.urlPhoto);
+    if (_person!.assetsPhoto != "") {
+      return AssetImage(_person!.assetsPhoto);
+    } else if (_person!.urlPhoto != ""){
+      return NetworkImage(_person!.urlPhoto);
+    }else{
+return AssetImage('assets/user_anon.png');
+    
     }
   }
 
   getAppDrawer() {
-    var appDrawer = AppDrawer(context, _person);
+    var appDrawer = AppDrawer(context, _person!);
     return appDrawer.buildDrawer();
   }
-}
-
-VerticalDivider setVerticalDivider() {
-  return VerticalDivider(
-    width: 16.0,
-    thickness: 1.0,
-    color: Colors.grey[700],
-  );
 }

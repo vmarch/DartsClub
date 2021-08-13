@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../drawer/app_drawer.dart';
-import 'package:test_flutter_app/src/models/person.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_flutter_app/record_news.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
+import 'package:test_flutter_app/src/models/in_app_user.dart';
+import 'package:test_flutter_app/src/models/news_item.dart';
+import 'package:test_flutter_app/src/ui/drawer/app_drawer.dart';
+
+
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -24,15 +26,17 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Person _person = Person.dummmyPerson();
+  InAppUser? _person = InAppUser();
   List<Widget> _newsItems = [];
 
-  Future<void> _getPrefPerson() async {
-    SharedPreferences pref = await _prefs;
+  Future<void> _getcurrentUser() async {
+    InAppUser? person = await dartsBloc.getCurrentLoggedUser();
+
     setState(() {
-      if (pref.get('person') != null) {
-        _person = pref.get('person') as Person;
+      if (person != null && person.firstName.isNotEmpty) {
+        _person = person;
+      } else {
+        _person!.firstName = 'Inkognito';
       }
     });
   }
@@ -40,14 +44,14 @@ class _Home extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _getPrefPerson();
+    _getcurrentUser();
   }
 
   @override
   Widget build(BuildContext context) {
     ClubNews clubNews = ClubNews(context);
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.blue[100],
       appBar: AppBar(
         title: const Text('Dart Club "stich e.V."'),
         actions: [
@@ -71,7 +75,7 @@ class _Home extends State<Home> {
   }
 
   getAppDrawer() {
-    var appDrawer = AppDrawer(context, _person);
+    var appDrawer = AppDrawer(context, _person!);
     return appDrawer.buildDrawer();
   }
 }
@@ -93,11 +97,11 @@ class ClubNews {
           return Column(
             children: [
               Container(
-                height: 64,
+                height: 36,
                 alignment: Alignment.center,
-                child: const Text(
+                child:  Text(
                   'News',
-                  style: TextStyle(color: Colors.deepOrange, fontSize: 30.0),
+                  style: TextStyle(color: Colors.blueGrey[900], fontSize: 24.0),
                 ),
               ),
               Expanded(
@@ -123,7 +127,7 @@ class ClubNews {
 
   buildList(BuildContext context, List<DocumentSnapshot> data) {
     _newsItems = List<Widget>.generate(data.length, (i) {
-      RecordNews myItem = RecordNews.fromSnapshot(data[i]);
+      NewsItem myItem = NewsItem.fromSnapshot(data[i]);
       return myItem.createNewItem();
     });
   }

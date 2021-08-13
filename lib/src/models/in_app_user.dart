@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class InAppUser {
   String _uid = '';
   String _firstName = '';
@@ -83,5 +85,20 @@ class InAppUser {
 
   set password(String value) {
     _password = value;
+  }
+
+  factory InAppUser.fromSnapshot(DocumentSnapshot data) {
+    return InAppUser(
+      uid: data['uid'],
+      firstName: data['firstName'],
+      lastName: data["lastName"],
+      nick: data["nick"],
+      city: data["city"],
+      phone: data["phone"],
+      email: data["email"],
+      assetsPhoto: data["assetsPhoto"],
+      urlPhoto: data["urlPhoto"],
+      password: data["password"],
+    );
   }
 }

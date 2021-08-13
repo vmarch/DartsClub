@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,26 +6,26 @@ class NewsItem {
   String itemTitle = '';
   String itemMessage = '';
   String imgPath = '';
+ late DocumentReference reference;
 
-  NewsItem(this.itemTitle, this.itemMessage, this.imgPath);
+ NewsItem(this.itemTitle, this.itemMessage, this.imgPath, this.reference);
 
-  NewsItem.dummyNewsItem() {
-    itemTitle = 'Unser Team ist super!';
-    itemMessage = '''Lorem ipsum dolor sit amet, 
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor
- invidunt ut labore et dolore magna aliquyam erat, sed diam 
- voluptua. At vero eos et accusam et''';
-    imgPath = 'drawer_header.jpg';
+  factory NewsItem.fromSnapshot(DocumentSnapshot data) {
+    return NewsItem(
+        data['itemTitle'], data['itemMessage'], data['imgPath'], data.reference);
   }
 
   Widget createNewItem() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildTitle(),
-        _buildMessage(),
-        _buildImage(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildTitle(),
+          _buildMessage(),
+          _buildImage(),
+        ],
+      ),
     );
   }
 
@@ -32,7 +33,7 @@ consetetur sadipscing elitr, sed diam nonumy eirmod tempor
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      color: Colors.amber[600],
+      color: Colors.blueGrey[600],
       child: Text(
         itemTitle,
         style: const TextStyle(
@@ -48,11 +49,11 @@ consetetur sadipscing elitr, sed diam nonumy eirmod tempor
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      color: Colors.amber[100],
+      color: Colors.blue[200],
       child: Text(
         itemMessage,
         style: TextStyle(
-          fontSize: 10.0,
+          fontSize: 12.0,
           color: Colors.grey[900],
         ),
       ),
@@ -61,7 +62,8 @@ consetetur sadipscing elitr, sed diam nonumy eirmod tempor
 
   Widget _buildImage() {
     return Image.asset(
-      imgPath,
+      'assets/$imgPath',
+      
     );
   }
 }

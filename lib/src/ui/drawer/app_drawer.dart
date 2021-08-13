@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/src/blocks/auth_bloc.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
+import 'package:test_flutter_app/src/models/in_app_user.dart';
 import 'package:test_flutter_app/src/models/person.dart';
 import '../screens/home/screen_staff.dart';
 
 class AppDrawer extends Drawer {
-  final Person person;
+  final InAppUser person;
   final BuildContext context;
   const AppDrawer(this.context, this.person, {Key? key}) : super(key: key);
 
   Drawer buildDrawer() {
     return Drawer(
       child: Container(
-        color: Colors.amber[600],
+        color: Colors.lightBlue[300],
         width: 200.0,
         child: Column(
           children: [
@@ -19,9 +20,6 @@ class AppDrawer extends Drawer {
               child: Column(
                 children: [
                   DrawerHeader(person: person),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
                   setDivider(),
                   DrawerMenu(context: context),
                 ],
@@ -40,7 +38,8 @@ class DrawerHeader extends StatelessWidget {
     required this.person,
   }) : super(key: key);
 
-  final Person person;
+  final InAppUser person;
+  // final Person person;
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +47,22 @@ class DrawerHeader extends StatelessWidget {
       children: [
         Image.asset('assets/drawer_header.jpg'),
         const SizedBox(
-          height: 16.0,
+          height: 12.0,
         ),
         CircleAvatar(
           radius: 45.0,
           backgroundImage: getUserAvatar(),
         ),
-        Text(
-          person.name,
-          style: TextStyle(
-            color: Colors.amber[600],
-            backgroundColor: Colors.black,
+        TextButton(
+          onPressed: () {
+            dartsBloc.openProfilScreen(context);
+          },
+          child: Text(
+            person.firstName,
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black,
+            ),
           ),
         ),
       ],
@@ -68,8 +72,10 @@ class DrawerHeader extends StatelessWidget {
   ImageProvider<Object> getUserAvatar() {
     if (person.assetsPhoto != "") {
       return AssetImage('assets/personsphoto/${person.assetsPhoto}');
-    } else {
+    } else if (person.urlPhoto != "") {
       return NetworkImage(person.urlPhoto);
+    } else {
+      return AssetImage('assets/user_anon.png');
     }
   }
 }
@@ -84,14 +90,14 @@ class DrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Column(
+    return Column(
       children: [
         ListTile(
           title: const Text('News'),
           leading: const Icon(Icons.event_available),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {
-            Navigator.pop(context);
+            dartsBloc.openNewsScreen(context);
           },
         ),
         ListTile(
@@ -116,10 +122,7 @@ class DrawerMenu extends StatelessWidget {
           leading: const Icon(Icons.support_agent_rounded),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const StaffScreen()),
-            );
+            dartsBloc.openStaffScreen(context);
           },
         ),
         ListTile(
@@ -135,7 +138,7 @@ class DrawerMenu extends StatelessWidget {
           title: const Text('Logout'),
           leading: const Icon(Icons.logout),
           onTap: () {
-             authBloc.signOut(context);
+            dartsBloc.signOut(context);
           },
         ),
       ],
@@ -152,7 +155,6 @@ Divider setDivider() {
 }
 
 void _pushPage(BuildContext context, Widget page) {
-
   Navigator.of(context) /*!*/ .push(
     MaterialPageRoute<void>(builder: (_) => page),
   );

@@ -4,10 +4,12 @@ import 'package:test_flutter_app/src/models/in_app_user.dart';
 import 'package:test_flutter_app/src/resources/repository.dart';
 import 'package:test_flutter_app/src/ui/screens/authenticate/screen_login.dart';
 import 'package:test_flutter_app/src/ui/screens/home/screen_main.dart';
+import 'package:test_flutter_app/src/ui/screens/home/screen_profil.dart';
+import 'package:test_flutter_app/src/ui/screens/home/screen_staff.dart';
 
 import 'bloc.dart';
 
-class AuthenticateBloc implements Bloc {
+class DartsBloc implements Bloc {
   BuildContext? context;
   final _repository = Repository();
   InAppUser? _inAppUser;
@@ -61,6 +63,7 @@ class AuthenticateBloc implements Bloc {
   }
 
   void cleanAllLoginData() {
+    _inAppUser = null;
     _firstName = '';
     _lastName = '';
     _nick = '';
@@ -106,9 +109,13 @@ class AuthenticateBloc implements Bloc {
     }
   }
 
-  // void getCurrentLoggedUser() {
-  //   _repository.currentUser;
-  // }
+  Future<InAppUser?> getCurrentLoggedUser() async {
+    if (_inAppUser != null && _inAppUser!.uid.isNotEmpty) {
+      return await _repository.getCurrentUserFromDB(_inAppUser!.uid);
+    } else {
+      return null;
+    }
+  }
 
   Future<void> initAuthentication(BuildContext ctx) async {
     context ??= ctx;
@@ -121,13 +128,6 @@ class AuthenticateBloc implements Bloc {
           _pushPage(context!, const MainScreen());
         } else {
           _pushPage(context!, const LoginScreen());
-
-          // Navigator.push(
-          //   context!,
-          //   MaterialPageRoute(
-          //     builder: (context) => const AuthenticateScreen(),
-          //   ),
-          // );
         }
         isResponced = true;
       }
@@ -139,9 +139,8 @@ class AuthenticateBloc implements Bloc {
     if (result != null) {
       _pushPage(context!, const MainScreen());
     } else {
-      //TODO error
+      //TODO check of type of error
       _pushPage(context!, const LoginScreen());
-      // return const AuthenticateScreen();
     }
   }
 
@@ -175,7 +174,7 @@ class AuthenticateBloc implements Bloc {
     if (result['user'] != null && result['user'].uid.isNotEmpty) {
       _inAppUser = result['user'];
 
-      registerOnServer();
+      registerUserOnServer();
 
       return 'After registration on server you will transfer to HomePage of Darts-Club App';
     } else {
@@ -212,8 +211,8 @@ class AuthenticateBloc implements Bloc {
     return _inAppUser!;
   }
 
-  void registerOnServer() {
-    _repository.putUserIntoFireBase(_fillInAppUser());
+  void registerUserOnServer() {
+    _repository.putUserIntoDB(_fillInAppUser());
     _pushPage(context!, const MainScreen());
   }
 
@@ -250,26 +249,31 @@ class AuthenticateBloc implements Bloc {
     authenticationAnon();
   }
 
-  void signOut(BuildContext ctx) {
+  void signOut(BuildContext ctx) async {
     context ??= ctx;
     cleanAllLoginData();
-    dynamic result = _repository.signOut();
-    if (result != null) {
-      print(result);
-      //TODO get result info
+    dynamic result = await _repository.signOut();
+    _pushPage(context!, const LoginScreen());
+  }
 
-      //TODO error
-      _pushPage(context!, const LoginScreen());
-    } else {
-      _pushPage(context!, const LoginScreen());
-    }
+  void openNewsScreen(BuildContext ctx) {
+    _pushPage(context!, const MainScreen());
+  }
+
+  void openProfilScreen(BuildContext ctx) {
+    _pushPage(context!, const UserProfilScreen());
+  }
+
+    void openStaffScreen(BuildContext ctx) {
+    _pushPage(context!, const StaffScreen());
   }
 
   @override
   void dispose() {
     print('dispose() invoked');
+    //cancel StreamSubscription
     sbs.cancel();
   }
 }
 
-final authBloc = AuthenticateBloc();
+final dartsBloc = DartsBloc();

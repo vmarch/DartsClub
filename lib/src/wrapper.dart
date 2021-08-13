@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/src/blocks/auth_bloc.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -19,21 +19,23 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
 
-    authBloc.initAuthentication(context);
+    dartsBloc.initAuthentication(context);
 
     return Scaffold(
-      backgroundColor: Colors.orange[600],
+      backgroundColor: Colors.blue[100],
       appBar: AppBar(
-        backgroundColor: Colors.brown[800],
+    
         title: const Text('Dart Club "stich e.V."'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'Hello in Darts-Club App',
+          children: [
+            Center(
+              child: Text(
+                'Hello in Darts-Club App',
+              style: TextStyle(fontSize: 34,color: Colors.indigo[900]),),
             )
           ],
         ),

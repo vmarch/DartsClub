@@ -29,7 +29,8 @@ class UsersProvider {
     user["urlPhoto"] = urlPhoto;
     user["password"] = password;
 
-    return await db.doc(uid)
+    return await db
+        .doc(uid)
         .set(user)
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -48,9 +49,19 @@ class UsersProvider {
     user["urlPhoto"] = inAppUser.urlPhoto;
     user["password"] = inAppUser.password;
 
-    return await db.doc(inAppUser.uid)
+    return await db
+        .doc(inAppUser.uid)
         .set(user)
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  Future<InAppUser?> getCurrentUserFromFireBase(String uid) async {
+    DocumentSnapshot snapshot = await db.doc(uid).get();
+    if (snapshot['uid'] != null) {
+      return InAppUser.fromSnapshot(snapshot);
+    } else {
+      return null;
+    }
   }
 }

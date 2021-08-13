@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter_app/src/blocks/darts_bloc.dart';
+import 'package:test_flutter_app/src/models/in_app_user.dart';
 import '../../drawer/app_drawer.dart';
 import 'package:test_flutter_app/src/models/person.dart';
 import 'package:test_flutter_app/model/staff_list.dart';
@@ -22,9 +24,22 @@ class StaffHome extends StatefulWidget {
 }
 
 class _StaffHomeState extends State<StaffHome> {
-  Person _person = Person.dummmyPerson();
+  InAppUser? _person = InAppUser();
   String _email = '';
   String _phone = '';
+
+
+  Future<void> _getcurrentUser() async {
+    InAppUser? person = await dartsBloc.getCurrentLoggedUser();
+
+    setState(() {
+      if (person != null && person.firstName.isNotEmpty) {
+        _person = person;
+      } else {
+        _person!.firstName = 'Inkognito';
+      }
+    });
+  }
 
   void _setContacts({String email = 'unbekannt', String phone = 'unbekannt'}) {
     setState(() {
@@ -32,6 +47,13 @@ class _StaffHomeState extends State<StaffHome> {
       _phone = 'Telefonnummer: $phone';
     });
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _getcurrentUser();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +87,15 @@ class _StaffHomeState extends State<StaffHome> {
       drawer: getAppDrawer(_person),
       body: Column(
         children: [
-          const SizedBox(height: 64.0),
-          Container(
-            alignment: Alignment.center,
-            child: const Text(
-              'Kontaktliste',
-              style: TextStyle(color: Colors.white, fontSize: 30.0),
+         
+          Padding(
+            padding: const EdgeInsets.only(top: 24, bottom: 24),
+            child: Container(
+              alignment: Alignment.center,
+              child: const Text(
+                'Staff',
+                style: TextStyle( fontSize: 30.0),
+              ),
             ),
           ),
           Container(
@@ -102,11 +127,11 @@ class _StaffHomeState extends State<StaffHome> {
                 },
               ),
             ),
-            height: 230,
+            height: 300,
           ),
           const SizedBox(height: 36.0),
           Container(
-              color: Colors.white,
+              color: Colors.blue[200],
               height: 50,
               child: Column(
                 children: [
@@ -121,7 +146,7 @@ class _StaffHomeState extends State<StaffHome> {
 
   ImageProvider<Object> getUserAvatar(Map<dynamic, dynamic> staffPerson) {
     if (staffPerson['assetsPhoto'] != "") {
-      return AssetImage(staffPerson['assetsPhoto']);
+      return AssetImage('assets/${staffPerson["assetsPhoto"]}');
     } else {
       return NetworkImage(staffPerson['urlPhoto']);
     }
